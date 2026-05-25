@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ weather.city }} Weather</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <a href="/" class="back-btn">← Back</a>
+        
+        {% if weather.error %}
+            <div class="error-card">
+                <h2>Error</h2>
+                <p>{{ weather.error }}</p>
+            </div>
+        {% else %}
+            <!-- Current Weather Section -->
+            <div class="current-weather-card">
+                <div class="location">
+                    <h1 class="city-name">{{ weather.city }}{% if weather.country %}, {{ weather.country }}{% endif %}</h1>
+                </div>
+                
+                <div class="weather-main">
+                    <div class="temperature-section">
+                        <div class="large-temp">{{ weather.temperature }}°C</div>
+                        <div class="description">{{ weather.description }}</div>
+                        <div class="feels-like">Feels like {{ weather.feels_like }}°C</div>
+                    </div>
+                    
+                    {% if weather.icon %}
+                        <div class="weather-icon">
+                            <img src="https://openweathermap.org/img/wn/{{ weather.icon }}@4x.png" 
+                                 alt="{{ weather.description }}"
+                                 title="{{ weather.description }}">
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <!-- Weather Details Grid -->
+                <div class="weather-details">
+                    <div class="detail-item">
+                        <span class="detail-label">💧 Humidity</span>
+                        <span class="detail-value">{{ weather.humidity }}%</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">🌬️ Wind Speed</span>
+                        <span class="detail-value">{{ weather.wind_speed }} m/s</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">🔽 Pressure</span>
+                        <span class="detail-value">{{ weather.pressure }} hPa</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">☁️ Cloudiness</span>
+                        <span class="detail-value">{{ weather.cloudiness }}%</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">🌅 Sunrise</span>
+                        <span class="detail-value">{{ weather.sunrise }}</span>
+                    </div>
+                    <div class="detail-item">
+                        <span class="detail-label">🌇 Sunset</span>
+                        <span class="detail-value">{{ weather.sunset }}</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Forecast Section -->
+            {% if forecast %}
+                <div class="forecast-section">
+                    <h2>5-Day Forecast</h2>
+                    <div class="forecast-grid">
+                        {% for day in forecast %}
+                            <div class="forecast-card">
+                                <div class="forecast-date">
+                                    {{ day.dt_txt | replace(' ', '<br>') }}
+                                </div>
+                                {% if day.weather %}
+                                    <img src="https://openweathermap.org/img/wn/{{ day.weather[0].icon }}@2x.png" 
+                                         alt="{{ day.weather[0].main }}"
+                                         class="forecast-icon">
+                                {% endif %}
+                                <div class="forecast-temp">
+                                    {{ day.main.temp | round | int }}°C
+                                </div>
+                                <div class="forecast-desc">
+                                    {{ day.weather[0].main if day.weather else 'Unknown' }}
+                                </div>
+                                <div class="forecast-details">
+                                    <small>💧 {{ day.main.humidity }}%</small><br>
+                                    <small>🌬️ {{ (day.wind.speed) | round(1) }} m/s</small>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            {% endif %}
+        {% endif %}
+    </div>
+</body>
+</html>

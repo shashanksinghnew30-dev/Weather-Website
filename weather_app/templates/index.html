@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Predictor</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <div class="weather-card">
+            <h1 class="title">🌦️ Weather Predictor</h1>
+            <p class="subtitle">Get current weather and forecasts for any city</p>
+            
+            <form method="POST" action="/weather" class="search-form">
+                <div class="input-group">
+                    <input 
+                        type="text" 
+                        name="city" 
+                        placeholder="Enter city name..." 
+                        required
+                        class="search-input"
+                        autocomplete="off"
+                    >
+                    <button type="submit" class="search-btn">Search</button>
+                </div>
+            </form>
+            
+            <div class="quick-links">
+                <p>Quick search:</p>
+                <div class="city-buttons">
+                    <form method="POST" action="/weather" style="display: inline;">
+                        <input type="hidden" name="city" value="London">
+                        <button type="submit" class="quick-btn">London</button>
+                    </form>
+                    <form method="POST" action="/weather" style="display: inline;">
+                        <input type="hidden" name="city" value="New York">
+                        <button type="submit" class="quick-btn">New York</button>
+                    </form>
+                    <form method="POST" action="/weather" style="display: inline;">
+                        <input type="hidden" name="city" value="Tokyo">
+                        <button type="submit" class="quick-btn">Tokyo</button>
+                    </form>
+                    <form method="POST" action="/weather" style="display: inline;">
+                        <input type="hidden" name="city" value="Sydney">
+                        <button type="submit" class="quick-btn">Sydney</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
